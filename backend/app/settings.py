@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app',
-    'garpix_qa',
+    'eqator',
 ]
 
 MIDDLEWARE = [

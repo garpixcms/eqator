@@ -1,4 +1,4 @@
-# Garpix QA
+# eqator
 
 Checking the Django project for quality. It can be convenient if you include it in CI.
 
@@ -14,17 +14,17 @@ Used packages:
 Install with pip:
 
 ```bash
-pip install garpix_qa
+pip install eqator
 ```
 
-Add the `garpix_qa` to your `INSTALLED_APPS`:
+Add the `eqator` to your `INSTALLED_APPS`:
 
 ```python
 # settings.py
 
 INSTALLED_APPS = [
     # ...
-    'garpix_qa',
+    'eqator',
 ]
 ```
 
@@ -69,7 +69,7 @@ python manage.py qa --verbose
 ```
 Input
 
-  Directory: /Users/aleksejkuznecov/projects/garpix_packages/garpix-qa/backend
+  Directory: /Users/aleksejkuznecov/projects/garpix_packages/eqator/backend
   Start at: 2021-02-27 12:09:30.999142
 
 Checking
@@ -92,20 +92,20 @@ Result
 ```
 Input
 
-  Directory: /Users/aleksejkuznecov/projects/garpix_packages/garpix-qa/backend
+  Directory: /Users/aleksejkuznecov/projects/garpix_packages/eqator/backend
   Start at: 2021-02-27 12:23:41.066752
 
 Checking
 
   Checking style guide with flake8 (see ".flake8") ERROR
-/Users/aleksejkuznecov/projects/garpix_packages/garpix-qa/backend/garpix_qa/constants.py:18:4: W292 no newline at end of file
-/Users/aleksejkuznecov/projects/garpix_packages/garpix-qa/backend/garpix_qa/helpers.py:38:1: E302 expected 2 blank lines, found 1
-/Users/aleksejkuznecov/projects/garpix_packages/garpix-qa/backend/garpix_qa/colors.py:9:1: W391 blank line at end of file
+/Users/aleksejkuznecov/projects/garpix_packages/eqator/backend/eqator/constants.py:18:4: W292 no newline at end of file
+/Users/aleksejkuznecov/projects/garpix_packages/eqator/backend/eqator/helpers.py:38:1: E302 expected 2 blank lines, found 1
+/Users/aleksejkuznecov/projects/garpix_packages/eqator/backend/eqator/colors.py:9:1: W391 blank line at end of file
 
   Django unit tests OK
   Cyclomatic complexity with radon (see "radon.cfg") OK
   Security lint with bandit (only high-severity issues, see ".bandit") ERROR
-[main]  INFO    Found project level .bandit file: /Users/aleksejkuznecov/projects/garpix_packages/garpix-qa/backend/.bandit
+[main]  INFO    Found project level .bandit file: /Users/aleksejkuznecov/projects/garpix_packages/eqator/backend/.bandit
 [main]  INFO    profile include tests: None
 [main]  INFO    cli include tests: None
 [main]  INFO    cli exclude tests: None
@@ -115,7 +115,7 @@ Run started:2021-02-27 12:23:45.044503
 Test results:
 >> Issue: [B602:subprocess_popen_with_shell_equals_true] subprocess call with shell=True identified, security issue.
    Severity: High   Confidence: High
-   Location: /Users/aleksejkuznecov/projects/garpix_packages/garpix-qa/backend/garpix_qa/helpers.py:39
+   Location: /Users/aleksejkuznecov/projects/garpix_packages/eqator/backend/eqator/helpers.py:39
    More Info: https://bandit.readthedocs.io/en/latest/plugins/b602_subprocess_popen_with_shell_equals_true.html
 38      def shell_run(cmd):
 39          ps = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)

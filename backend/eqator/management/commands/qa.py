@@ -2,7 +2,7 @@ import os
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
-from garpix_qa.main import run_qa
+from ...main import run_qa
 
 
 class Command(BaseCommand):

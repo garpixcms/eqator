@@ -1,18 +1,18 @@
 from setuptools import setup, find_packages
 from os import path
 
-here = path.join(path.abspath(path.dirname(__file__)), 'garpix_qa')
+here = path.join(path.abspath(path.dirname(__file__)), 'eqator')
 
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name='garpix_qa',
-    version='1.10.0',
+    name='eqator',
+    version='2.0.0',
     description='Checking the Django project for quality',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    url='https://github.com/garpixcms/garpix_qa',
+    url='https://github.com/garpixcms/eqator',
     author='Garpix LTD',
     author_email='info@garpix.com',
     license='MIT',
