@@ -94,10 +94,10 @@ def check_unit_tests(directory: str, verbose: bool, all: bool, tests: bool, vari
 def check_garpix_page_tests(verbose: bool, all: bool, garpix_page: bool, variables_passed: bool) -> int:
     if 'garpix_page' in settings.INSTALLED_APPS and check_needed(all, garpix_page, variables_passed):
         print_default('Django unit tests garpix_page')
-        garpix_tests_result = run_unit_tests(('garpix_page',))
+        failures, output = run_unit_tests(('garpix_page',))
 
-        if garpix_tests_result['failures']:
-            print_error(garpix_tests_result['output'])
+        if failures:
+            print_error(output)
             return 1
         print_ok('', verbose)
     return 0
