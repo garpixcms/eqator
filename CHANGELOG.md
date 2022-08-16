@@ -1,3 +1,7 @@
+### 2.1.1 (16.08.2022)
+
+- Tests check fixed
+
 ### 2.1.0 (16.08.2022)
 
 - Different run options added (examples in `Readme.md`)
