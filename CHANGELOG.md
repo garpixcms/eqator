@@ -1,3 +1,7 @@
+### 1.11.0 (16.08.2022)
+
+- Different run options added (examples in `Readme.md`)
+
 ### 1.10.0 (29.06.2022)
 
 - Pytest check fixed
