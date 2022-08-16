@@ -1,6 +1,10 @@
-### 1.11.0 (16.08.2022)
+### 2.1.0 (16.08.2022)
 
 - Different run options added (examples in `Readme.md`)
+
+### 2.0.0 (04.08.2022)
+
+- Eqator init
 
 ### 1.10.0 (29.06.2022)
 
