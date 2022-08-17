@@ -1,3 +1,7 @@
+### 2.1.2 (17.08.2022)
+
+- Fixed bug TypeError
+
 ### 2.1.1 (16.08.2022)
 
 - Tests check fixed
