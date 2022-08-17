@@ -73,7 +73,7 @@ def check_unit_tests(directory: str, verbose: bool, all: bool, tests: bool, vari
             passed_count: list = re.findall(r'(\d+) passed', lines)
             skipped_count: list = re.findall(r'(\d+) skipped', lines)
 
-            if int(tests_count[0]) == sum(skipped_count + passed_count):
+            if int(tests_count[0]) == sum(list(map(int, skipped_count)) + list(map(int, passed_count))):
                 print_ok(lines, verbose)
                 return 0
 
