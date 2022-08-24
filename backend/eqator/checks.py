@@ -64,7 +64,7 @@ def check_migrations(directory: str, verbose: bool, all: bool, migrations: bool,
 
 def check_unit_tests(directory: str, verbose: bool, all: bool, tests: bool, variables_passed: bool, test_coverage: bool) -> int:
     if check_needed(all, tests, variables_passed):
-        command_pref = 'coverage run ' if test_coverage else ''
+        command_pref = 'coverage run ' if check_needed(all, test_coverage, variables_passed) else ''
 
         if find_spec('pytest') is not None:
             print_default('Django pytest')
@@ -83,6 +83,10 @@ def check_unit_tests(directory: str, verbose: bool, all: bool, tests: bool, vari
             return 1
         else:
             print_default('Django unit tests')
+
+            if command_pref != '':
+                shell_run(f'{command_pref}{directory}/manage.py test')
+
             failures, output = run_unit_tests(())
 
             if failures:
