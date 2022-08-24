@@ -11,6 +11,7 @@ from .checks import check_migrations
 from .checks import check_unit_tests
 from .checks import check_garpix_page_tests
 from .checks import check_lighthouse
+from .checks import check_test_coverage
 
 import datetime
 from .constants import CONFIG_FILE_NAME_FLAKE8, CONFIG_FILE_CONTENT_FLAKE8
@@ -36,7 +37,7 @@ def create_configuration_files(directory):
 def run_qa(
         directory, verbose: bool = False, all: bool = False, clear_reports: bool = False,
         flake: bool = False, radon: bool = False, linter: bool = False, migrations: bool = False, tests: bool = False,
-        garpix_page: bool = False
+        garpix_page: bool = False, test_coverage: bool = False
 ):
     # Default run all check without lighthouse
     variables_passed = all or flake or radon or linter or migrations or tests or garpix_page
@@ -66,10 +67,13 @@ def run_qa(
     error_count += check_migrations(directory, verbose, all, migrations, variables_passed)
 
     # Unit tests
-    error_count += check_unit_tests(directory, verbose, all, tests, variables_passed)
+    error_count += check_unit_tests(directory, verbose, all, tests, variables_passed, test_coverage)
 
     # Unit tests garpix_page
     error_count += check_garpix_page_tests(verbose, all, garpix_page, variables_passed)
+
+    # Test coverage
+    error_count += check_test_coverage(verbose, all, test_coverage, variables_passed)
 
     # Lighthouse
     error_count += check_lighthouse(verbose, all, clear_reports)

@@ -16,6 +16,7 @@ twine = "*"
 m2r = "*"
 flake8-django = "*"
 mistune = "==0.8.4"
+install = "*"
 
 [dev-packages]
 

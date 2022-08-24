@@ -8,6 +8,7 @@ Used packages:
 * [flake8](https://pypi.org/project/flake8/) - linter of source code.
 * [radon](https://pypi.org/project/radon/) - tool that computes various metrics from the source code.
 * [bandit](https://pypi.org/project/bandit/) - a security linter from PyCQA.
+* [coverage](https://pypi.org/project/coverage/) - a test coverage for unittest.
 
 ## Quickstart
 
@@ -115,6 +116,22 @@ python manage.py qa -a
 python manage.py qa --all
 ```
 
+Run test coverage check
+
+```bash
+python manage.py qa -c
+```
+
+```bash
+python manage.py qa --test_coverage
+```
+
+Note, that you need to add `TEST_COVERAGE_RATE` variable to your `settings.py` file (default value is 70):
+
+```python
+TEST_COVERAGE_RATE = 70
+```
+
 Optionally, do not save Lighthouse CI report files:
 
 ```bash
@@ -126,6 +143,8 @@ Check your project with all logs:
 ```bash
 python manage.py qa --verbose
 ```
+
+
 
 ### Example output with OK
 

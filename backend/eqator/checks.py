@@ -6,6 +6,7 @@ from .helpers import run_unit_tests
 from django.conf import settings
 from .helpers import print_default
 from .helpers import check_needed
+import re
 
 
 def check_flake(directory: str, verbose: bool, config_file: str, all: bool, flake: bool, variables_passed: bool) -> int:
@@ -61,13 +62,14 @@ def check_migrations(directory: str, verbose: bool, all: bool, migrations: bool,
     return 0
 
 
-def check_unit_tests(directory: str, verbose: bool, all: bool, tests: bool, variables_passed: bool) -> int:
+def check_unit_tests(directory: str, verbose: bool, all: bool, tests: bool, variables_passed: bool, test_coverage: bool) -> int:
     if check_needed(all, tests, variables_passed):
+        command_pref = 'coverage run ' if test_coverage else ''
+
         if find_spec('pytest') is not None:
-            import re
             print_default('Django pytest')
             backend_dir = directory
-            cmd = f'pytest {backend_dir}'
+            cmd = f'{command_pref}pytest {backend_dir}'
             lines = shell_run(cmd)
             tests_count: list = re.findall(r'collected (\d+) item', lines)
             passed_count: list = re.findall(r'(\d+) passed', lines)
@@ -100,6 +102,24 @@ def check_garpix_page_tests(verbose: bool, all: bool, garpix_page: bool, variabl
             print_error(output)
             return 1
         print_ok('', verbose)
+    return 0
+
+
+def check_test_coverage(verbose: bool, all: bool, coverage: bool, variables_passed: bool) -> int:
+    if check_needed(all, coverage, variables_passed):
+
+        print_default('Test coverage')
+
+        cmd = 'coverage report'
+        lines = shell_run(cmd)
+
+        result_line: list = re.findall(r'TOTAL[ \d]+ (\d+)%', lines)
+
+        if int(result_line[0]) < getattr(settings, 'TEST_COVERAGE_RATE', 70):
+            print_error(lines)
+            return 1
+        print_ok('', verbose)
+
     return 0
 
 

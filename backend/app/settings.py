@@ -139,3 +139,5 @@ TEMPLATES_PATH = os.path.join(BASE_DIR, '..', 'frontend', 'templates')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, '..', 'frontend', 'static'),
 ]
+
+TEST_COVERAGE_RATE = 70
