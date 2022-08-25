@@ -1,3 +1,7 @@
+### 2.2.0 (24.08.2022)
+
+- Test coverage check added (examples in `Readme.md`)
+
 ### 2.1.2 (17.08.2022)
 
 - Fixed bug TypeError

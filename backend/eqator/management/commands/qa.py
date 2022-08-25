@@ -63,6 +63,12 @@ class Command(BaseCommand):
             help='Run django unit tests for garpix_page'
         )
 
+        parser.add_argument(
+            '--test_coverage', '-c',
+            action='store_true',
+            help='Check test coverage of the project'
+        )
+
     def handle(self, *args, **options):
         directory = os.path.abspath(os.path.join(settings.BASE_DIR))
         verbose = options['verbose']
@@ -74,4 +80,6 @@ class Command(BaseCommand):
         migrations = options['migrations']
         tests = options['tests']
         garpix_page = options['garpix_page']
-        run_qa(directory, verbose, all, clear_reports, flake, radon, linter, migrations, tests, garpix_page)
+        test_coverage = options['test_coverage']
+        run_qa(directory, verbose, all, clear_reports, flake, radon, linter, migrations, tests, garpix_page,
+               test_coverage)
