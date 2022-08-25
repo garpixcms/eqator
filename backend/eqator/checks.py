@@ -64,7 +64,7 @@ def check_migrations(directory: str, verbose: bool, all: bool, migrations: bool,
 
 def check_unit_tests(directory: str, verbose: bool, all: bool, tests: bool, variables_passed: bool, test_coverage: bool) -> int:
     if check_needed(all, tests, variables_passed):
-        command_pref = 'coverage run ' if check_needed(all, test_coverage, variables_passed) else ''
+        command_pref = 'coverage run --source=. ' if check_needed(all, test_coverage, variables_passed) else ''
 
         if find_spec('pytest') is not None:
             print_default('Django pytest')
@@ -109,7 +109,10 @@ def check_garpix_page_tests(verbose: bool, all: bool, garpix_page: bool, variabl
     return 0
 
 
-def check_test_coverage(verbose: bool, all: bool, coverage: bool, variables_passed: bool) -> int:
+def check_test_coverage(verbose: bool, all: bool, coverage: bool, variables_passed: bool) -> (int, int):
+
+    coverage_result = -1
+
     if check_needed(all, coverage, variables_passed):
 
         print_default('Test coverage')
@@ -119,12 +122,14 @@ def check_test_coverage(verbose: bool, all: bool, coverage: bool, variables_pass
 
         result_line: list = re.findall(r'TOTAL[ \d]+ (\d+)%', lines)
 
-        if int(result_line[0]) < getattr(settings, 'TEST_COVERAGE_RATE', 70):
+        coverage_result = int(result_line[0])
+
+        if coverage_result < getattr(settings, 'TEST_COVERAGE_RATE', 70):
             print_error(lines)
-            return 1
+            return 1, coverage_result
         print_ok('', verbose)
 
-    return 0
+    return 0, coverage_result
 
 
 def check_lighthouse(verbose: bool = False, clear_reports: bool = False, all: bool = False) -> int:
