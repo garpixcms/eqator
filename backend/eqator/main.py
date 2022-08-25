@@ -15,6 +15,7 @@ from .checks import check_test_coverage
 
 import datetime
 from .constants import CONFIG_FILE_NAME_FLAKE8, CONFIG_FILE_CONTENT_FLAKE8
+from .constants import CONFIG_FILE_NAME_COVERAGE, CONFIG_FILE_CONTENT_COVERAGE
 from .constants import CONFIG_FILE_NAME_RADON, CONFIG_FILE_CONTENT_RADON
 from .constants import CONFIG_FILE_NAME_BANDIT, CONFIG_FILE_CONTENT_BANDIT
 from .constants import CONFIG_FILE_NAME_LIGHTHOUSE, CONFIG_FILE_CONTENT_LIGHTHOUSE
@@ -31,6 +32,7 @@ def create_configuration_files(directory):
     create_config(directory, CONFIG_FILE_NAME_FLAKE8, CONFIG_FILE_CONTENT_FLAKE8)
     create_config(directory, CONFIG_FILE_NAME_RADON, CONFIG_FILE_CONTENT_RADON)
     create_config(directory, CONFIG_FILE_NAME_BANDIT, CONFIG_FILE_CONTENT_BANDIT)
+    create_config(directory, CONFIG_FILE_NAME_COVERAGE, CONFIG_FILE_CONTENT_COVERAGE)
     create_config(directory, CONFIG_FILE_NAME_LIGHTHOUSE, CONFIG_FILE_CONTENT_LIGHTHOUSE)
 
 

@@ -64,7 +64,7 @@ def check_migrations(directory: str, verbose: bool, all: bool, migrations: bool,
 
 def check_unit_tests(directory: str, verbose: bool, all: bool, tests: bool, variables_passed: bool, test_coverage: bool) -> int:
     if check_needed(all, tests, variables_passed):
-        command_pref = 'coverage run --source=. ' if check_needed(all, test_coverage, variables_passed) else ''
+        command_pref = 'coverage run ' if check_needed(all, test_coverage, variables_passed) else ''
 
         if find_spec('pytest') is not None:
             print_default('Django pytest')

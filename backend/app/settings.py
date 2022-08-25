@@ -140,4 +140,4 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, '..', 'frontend', 'static'),
 ]
 
-TEST_COVERAGE_RATE = 12
+TEST_COVERAGE_RATE = 8
