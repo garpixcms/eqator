@@ -20,7 +20,7 @@ CONFIG_FILE_CONTENT_BANDIT = '''[bandit]
 
 # test coverage
 CONFIG_FILE_NAME_COVERAGE = '.coveragerc'
-CONFIG_FILE_CONTENT_COVERAGE = '''[coveragerc]
+CONFIG_FILE_CONTENT_COVERAGE = '''
 [run]
 source = .
 omit = ./venv/*,*tests*,*apps.py,*manage.py,*__init__.py,*migrations*,*asgi*,*wsgi*,*admin.py,*urls.py

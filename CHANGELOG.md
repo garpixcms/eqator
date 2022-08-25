@@ -1,3 +1,7 @@
+### 2.2.1 (24.08.2022)
+
+- Test coverage check updated
+
 ### 2.2.0 (24.08.2022)
 
 - Test coverage check added (examples in `Readme.md`)
