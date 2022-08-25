@@ -73,7 +73,8 @@ def run_qa(
     error_count += check_garpix_page_tests(verbose, all, garpix_page, variables_passed)
 
     # Test coverage
-    error_count += check_test_coverage(verbose, all, test_coverage, variables_passed)
+    coverage_result, coverage_value = check_test_coverage(verbose, all, test_coverage, variables_passed)
+    error_count += coverage_result
 
     # Lighthouse
     error_count += check_lighthouse(verbose, all, clear_reports)
@@ -86,6 +87,8 @@ def run_qa(
     print_default(f'Problems found: {error_count}\n')
     print_default(f'End at: {end_at}\n')
     print_default(f'Duration: {duration}\n')
+    if coverage_value != -1:
+        print_default(f'Test coverage: {coverage_value}%\n')
     print_empty()
     if error_count > 0:
         exit(1)
