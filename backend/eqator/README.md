@@ -104,7 +104,7 @@ python manage.py qa -p
 python manage.py qa --garpix_page
 ```
 
-Check Lighthouse CI check:
+Lighthouse CI check:
 
 (requires Lighthouse CI installed)
 
