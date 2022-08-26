@@ -1,7 +1,8 @@
 from importlib.util import find_spec
-from .helpers import shell_run, print_warning
+from .helpers import shell_run
 from .helpers import print_error
 from .helpers import print_ok
+from .helpers import print_warning
 from .helpers import run_unit_tests
 from django.conf import settings
 from .helpers import print_default
