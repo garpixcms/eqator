@@ -16,9 +16,9 @@ class Command(BaseCommand):
         )
 
         parser.add_argument(
-            '--all', '-a',
+            '--lighthouse', '-lh',
             action='store_true',
-            help='Run all checks (includes Lighthouse CI)',
+            help='Run  Lighthouse CI check',
         )
 
         parser.add_argument(
@@ -72,7 +72,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         directory = os.path.abspath(os.path.join(settings.BASE_DIR))
         verbose = options['verbose']
-        all = options['all']
+        lighthouse = options['lighthouse']
         clear_reports = options['clear_reports']
         flake = options['flake']
         radon = options['radon']
@@ -81,5 +81,5 @@ class Command(BaseCommand):
         tests = options['tests']
         garpix_page = options['garpix_page']
         test_coverage = options['test_coverage']
-        run_qa(directory, verbose, all, clear_reports, flake, radon, linter, migrations, tests, garpix_page,
+        run_qa(directory, verbose, lighthouse, clear_reports, flake, radon, linter, migrations, tests, garpix_page,
                test_coverage)
