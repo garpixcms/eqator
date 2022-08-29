@@ -2,6 +2,7 @@ from importlib.util import find_spec
 from .helpers import shell_run
 from .helpers import print_error
 from .helpers import print_ok
+from .helpers import print_warning
 from .helpers import run_unit_tests
 from django.conf import settings
 from .helpers import print_default
@@ -9,8 +10,8 @@ from .helpers import check_needed
 import re
 
 
-def check_flake(directory: str, verbose: bool, config_file: str, all: bool, flake: bool, variables_passed: bool) -> int:
-    if check_needed(all, flake, variables_passed):
+def check_flake(directory: str, verbose: bool, config_file: str, flake: bool, variables_passed: bool) -> int:
+    if check_needed(flake, variables_passed):
         print_default(f'Checking style guide with flake8 (see "{config_file}")')
         backend_dir = directory
         cmd = f'flake8 {backend_dir}'
@@ -23,8 +24,8 @@ def check_flake(directory: str, verbose: bool, config_file: str, all: bool, flak
     return 0
 
 
-def check_radon(directory: str, verbose: bool, config_file: str, all: bool, radon: bool, variables_passed: bool) -> int:
-    if check_needed(all, radon, variables_passed):
+def check_radon(directory: str, verbose: bool, config_file: str, radon: bool, variables_passed: bool) -> int:
+    if check_needed(radon, variables_passed):
         print_default(f'Cyclomatic complexity with radon (see "{config_file}")')
         cmd = f'radon cc {directory}'
         lines = shell_run(cmd)
@@ -36,9 +37,9 @@ def check_radon(directory: str, verbose: bool, config_file: str, all: bool, rado
     return 0
 
 
-def check_security_linter(directory: str, verbose: bool, config_file: str, all: bool, linter: bool,
+def check_security_linter(directory: str, verbose: bool, config_file: str, linter: bool,
                           variables_passed: bool) -> int:
-    if check_needed(all, linter, variables_passed):
+    if check_needed(linter, variables_passed):
         print_default(f'Security lint with bandit (only high-severity issues, see "{config_file}")')
         lines = shell_run(f'bandit -r {directory} -lll')
         if 'No issues identified' in lines:
@@ -49,8 +50,8 @@ def check_security_linter(directory: str, verbose: bool, config_file: str, all: 
     return 0
 
 
-def check_migrations(directory: str, verbose: bool, all: bool, migrations: bool, variables_passed: bool) -> int:
-    if check_needed(all, migrations, variables_passed):
+def check_migrations(directory: str, verbose: bool, migrations: bool, variables_passed: bool) -> int:
+    if check_needed(migrations, variables_passed):
         print_default('Project migrations')
         cmd = f'python3 {directory}/manage.py makemigrations --check --dry-run'
         lines = shell_run(cmd)
@@ -62,14 +63,13 @@ def check_migrations(directory: str, verbose: bool, all: bool, migrations: bool,
     return 0
 
 
-def check_unit_tests(directory: str, verbose: bool, all: bool, tests: bool, variables_passed: bool, test_coverage: bool) -> int:
-    if check_needed(all, tests, variables_passed):
-        command_pref = 'coverage run ' if check_needed(all, test_coverage, variables_passed) else ''
+def check_unit_tests(directory: str, verbose: bool, tests: bool, variables_passed: bool, test_coverage: bool) -> int:
+    if check_needed(tests, variables_passed):
+        command_pref = 'coverage run ' if check_needed(test_coverage, variables_passed) else ''
 
         if find_spec('pytest') is not None:
             print_default('Django pytest')
-            backend_dir = directory
-            cmd = f'{command_pref}pytest {backend_dir}'
+            cmd = 'coverage run -m pytest' if check_needed(test_coverage, variables_passed) else 'pytest'
             lines = shell_run(cmd)
             tests_count: list = re.findall(r'collected (\d+) item', lines)
             passed_count: list = re.findall(r'(\d+) passed', lines)
@@ -84,7 +84,7 @@ def check_unit_tests(directory: str, verbose: bool, all: bool, tests: bool, vari
         else:
             print_default('Django unit tests')
 
-            if command_pref != '':
+            if check_needed(test_coverage, variables_passed):
                 shell_run(f'{command_pref}{directory}/manage.py test')
 
             failures, output = run_unit_tests(())
@@ -97,8 +97,8 @@ def check_unit_tests(directory: str, verbose: bool, all: bool, tests: bool, vari
     return 0
 
 
-def check_garpix_page_tests(verbose: bool, all: bool, garpix_page: bool, variables_passed: bool) -> int:
-    if 'garpix_page' in settings.INSTALLED_APPS and check_needed(all, garpix_page, variables_passed):
+def check_garpix_page_tests(verbose: bool, garpix_page: bool, variables_passed: bool) -> int:
+    if 'garpix_page' in settings.INSTALLED_APPS and check_needed(garpix_page, variables_passed):
         print_default('Django unit tests garpix_page')
         failures, output = run_unit_tests(('garpix_page',))
 
@@ -109,11 +109,10 @@ def check_garpix_page_tests(verbose: bool, all: bool, garpix_page: bool, variabl
     return 0
 
 
-def check_test_coverage(verbose: bool, all: bool, coverage: bool, variables_passed: bool) -> (int, int):
-
+def check_test_coverage(verbose: bool, coverage: bool, variables_passed: bool) -> (int, int):
     coverage_result = -1
 
-    if check_needed(all, coverage, variables_passed):
+    if check_needed(coverage, variables_passed):
 
         print_default('Test coverage')
 
@@ -132,10 +131,21 @@ def check_test_coverage(verbose: bool, all: bool, coverage: bool, variables_pass
     return 0, coverage_result
 
 
-def check_lighthouse(verbose: bool = False, clear_reports: bool = False, all: bool = False) -> int:
-    if all:
+def check_lighthouse(verbose: bool, lighthouse: bool, clear_reports: bool, variables_passed: bool) -> int:
+    if check_needed(lighthouse, variables_passed):
         print_default('Lighthouse CI')
-        shell_run('lhci collect')
+
+        lines = shell_run('lhci collect')
+
+        if 'command not found' in lines:
+            if getattr(settings, 'LIGHTHOUSE_CHECK_METHOD', 'warning') == 'error':
+                print_error(
+                    'You need to install Lighthouse CI to run Lighthouse CI check (look at `Readme.md` for more info)',
+                    short_error=True)
+                return 1
+            print_warning(
+                'You need to install Lighthouse CI to run Lighthouse CI check (look at `Readme.md` for more info)')
+            return 0
         lines = shell_run('lhci assert')
         if clear_reports:
             shell_run('rm -rf .lighthouseci')
@@ -143,4 +153,17 @@ def check_lighthouse(verbose: bool = False, clear_reports: bool = False, all: bo
             print_error(lines)
             return 1
         print_ok(lines, verbose)
+
+    return 0
+
+
+def check_sentry() -> int:
+    print_default('Sentry SDK')
+    if find_spec('sentry_sdk_в') is not None:
+        print_ok()
+        return 0
+    if getattr(settings, 'SENTRY_CHECK_METHOD', 'error') == 'error':
+        print_error("Sentry SDK isn't installed", short_error=True)
+        return 1
+    print_warning("Sentry SDK isn't installed")
     return 0

@@ -35,7 +35,7 @@ To use Lighthouse scoring, install `Lighthouse CI` with `npm`:
 npm install -g @lhci/cli
 ```
 
-Check your project (default run all the checks excluding Lighthouse CI):
+Check your project:
 
 ```bash
 python manage.py qa
@@ -104,6 +104,18 @@ python manage.py qa -p
 python manage.py qa --garpix_page
 ```
 
+Lighthouse CI check:
+
+(requires Lighthouse CI installed)
+
+```bash
+python manage.py qa -lh
+```
+
+```bash
+python manage.py qa --lighthouse
+```
+
 Run test coverage check
 
 ```bash
@@ -120,18 +132,6 @@ Note, that you need to add `TEST_COVERAGE_RATE` variable to your `settings.py` f
 TEST_COVERAGE_RATE = 70
 ```
 
-Check your project with Lighthouse CI:
-
-(requires Lighthouse CI installed)
-
-```bash
-python manage.py qa -a
-```
-
-```bash
-python manage.py qa --all
-```
-
 Optionally, do not save Lighthouse CI report files:
 
 ```bash
@@ -143,6 +143,15 @@ Check your project with all logs:
 ```bash
 python manage.py qa --verbose
 ```
+
+You can also add add `SENTRY_CHECK_METHOD` and `LIGHTHOUSE_CHECK_METHOD` variables to your `settings.py` file to controle the sentry SDK and lighthouse CI checking methods:
+
+```python
+# settings.py
+SENTRY_CHECK_METHOD = 'error'
+LIGHTHOUSE_CHECK_METHOD = 'warning'
+```
+
 
 ### Example output with OK
 

@@ -1,3 +1,9 @@
+### 2.3.0 (25.08.2022)
+
+- Sentry SDK installation check added
+- Lighthouse default check added
+- Test coverage check fixed
+
 ### 2.2.1 (24.08.2022)
 
 - Test coverage check updated

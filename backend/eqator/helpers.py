@@ -5,6 +5,7 @@ from django.test.runner import DiscoverRunner
 from .colors import RESET
 from .colors import GREEN
 from .colors import RED
+from .colors import YELLOW
 from .colors import BOLD
 
 
@@ -21,11 +22,22 @@ def print_ok(lines='', verbose=False):
         print(lines)
 
 
-def print_error(lines=''):
+def print_error(lines='', short_error=False):
     sys.stdout.write(RED)
     sys.stdout.write(' ERROR\n')
-    sys.stdout.write(RESET)
+    if short_error:
+        print(lines)
+        sys.stdout.write(RESET)
+    else:
+        sys.stdout.write(RESET)
+        print(lines)
+
+
+def print_warning(lines=''):
+    sys.stdout.write(YELLOW)
+    sys.stdout.write(' WARNING\n')
     print(lines)
+    sys.stdout.write(RESET)
 
 
 def print_header(text=''):
@@ -60,5 +72,5 @@ def run_unit_tests(apps) -> (int, str):
     return failures, output
 
 
-def check_needed(all_variable, check_variable, variables_passed):
-    return all_variable or check_variable or not variables_passed
+def check_needed(check_variable, variables_passed):
+    return check_variable or not variables_passed

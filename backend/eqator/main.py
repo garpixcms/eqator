@@ -12,6 +12,7 @@ from .checks import check_unit_tests
 from .checks import check_garpix_page_tests
 from .checks import check_lighthouse
 from .checks import check_test_coverage
+from .checks import check_sentry
 
 import datetime
 from .constants import CONFIG_FILE_NAME_FLAKE8, CONFIG_FILE_CONTENT_FLAKE8
@@ -37,12 +38,12 @@ def create_configuration_files(directory):
 
 
 def run_qa(
-        directory, verbose: bool = False, all: bool = False, clear_reports: bool = False,
+        directory, verbose: bool = False, lighthouse: bool = False, clear_reports: bool = False,
         flake: bool = False, radon: bool = False, linter: bool = False, migrations: bool = False, tests: bool = False,
         garpix_page: bool = False, test_coverage: bool = False
 ):
     # Default run all check without lighthouse
-    variables_passed = all or flake or radon or linter or migrations or tests or garpix_page
+    variables_passed = lighthouse or flake or radon or linter or migrations or tests or garpix_page or test_coverage
     #
     os.chdir(directory)
     create_configuration_files(directory)
@@ -57,29 +58,32 @@ def run_qa(
     print_header('Checking')
 
     # flake8 for backend
-    error_count += check_flake(directory, verbose, CONFIG_FILE_NAME_FLAKE8, all, flake, variables_passed)
+    error_count += check_flake(directory, verbose, CONFIG_FILE_NAME_FLAKE8, flake, variables_passed)
 
     # Cyclomatic complexity
-    error_count += check_radon(directory, verbose, CONFIG_FILE_NAME_RADON, all, radon, variables_passed)
+    error_count += check_radon(directory, verbose, CONFIG_FILE_NAME_RADON, radon, variables_passed)
 
     # Security linter
-    error_count += check_security_linter(directory, verbose, CONFIG_FILE_NAME_BANDIT, all, linter, variables_passed)
+    error_count += check_security_linter(directory, verbose, CONFIG_FILE_NAME_BANDIT, linter, variables_passed)
 
     # Project migrations
-    error_count += check_migrations(directory, verbose, all, migrations, variables_passed)
+    error_count += check_migrations(directory, verbose, migrations, variables_passed)
 
     # Unit tests
-    error_count += check_unit_tests(directory, verbose, all, tests, variables_passed, test_coverage)
+    error_count += check_unit_tests(directory, verbose, tests, variables_passed, test_coverage)
 
     # Unit tests garpix_page
-    error_count += check_garpix_page_tests(verbose, all, garpix_page, variables_passed)
+    error_count += check_garpix_page_tests(verbose, garpix_page, variables_passed)
 
     # Test coverage
-    coverage_result, coverage_value = check_test_coverage(verbose, all, test_coverage, variables_passed)
+    coverage_result, coverage_value = check_test_coverage(verbose, test_coverage, variables_passed)
     error_count += coverage_result
 
     # Lighthouse
-    error_count += check_lighthouse(verbose, all, clear_reports)
+    error_count += check_lighthouse(verbose, lighthouse, clear_reports, variables_passed)
+
+    # Sentry SDK
+    error_count += check_sentry()
 
     # *** RESULT ***
     end_at = datetime.datetime.now()
