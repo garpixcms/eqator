@@ -242,6 +242,20 @@ Edit `lighthouserc.json` to set URL and configure assertions.
 
 Reference: https://github.com/GoogleChrome/lighthouse-ci/blob/main/docs/configuration.md
 
+## Send report
+
+To send statistics you need to add `EQATOR_SEND_HOST`:
+```python
+# settings.py
+
+EQATOR_SEND_HOST = 'http://example.com/analytics/eqator/:project_name/'
+```
+
+```bash
+python manage.py qa --send
+```
+
+
 # Changelog
 
 See [CHANGELOG.md](CHANGELOG.md).

@@ -18,7 +18,7 @@ class Command(BaseCommand):
         parser.add_argument(
             '--lighthouse', '-lh',
             action='store_true',
-            help='Run  Lighthouse CI check',
+            help='Run Lighthouse CI check',
         )
 
         parser.add_argument(
@@ -69,6 +69,12 @@ class Command(BaseCommand):
             help='Check test coverage of the project'
         )
 
+        parser.add_argument(
+            '--send', '-s',
+            action='store_true',
+            help='Submit audit information'
+        )
+
     def handle(self, *args, **options):
         directory = os.path.abspath(os.path.join(settings.BASE_DIR))
         verbose = options['verbose']
@@ -81,5 +87,6 @@ class Command(BaseCommand):
         tests = options['tests']
         garpix_page = options['garpix_page']
         test_coverage = options['test_coverage']
+        send = options['send']
         run_qa(directory, verbose, lighthouse, clear_reports, flake, radon, linter, migrations, tests, garpix_page,
-               test_coverage)
+               test_coverage, send)
