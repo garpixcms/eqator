@@ -20,7 +20,7 @@ def check_flake(directory: str, verbose: bool, config_file: str, flake: bool, va
             print_ok(lines, verbose)
             return 0
         print_error(lines)
-        return 1
+        return len(lines.strip().split('\n'))
     return 0
 
 
@@ -33,7 +33,7 @@ def check_radon(directory: str, verbose: bool, config_file: str, radon: bool, va
             print_ok(lines, verbose)
             return 0
         print_error(lines)
-        return 1
+        return len(re.findall(' {4}.*?\n', lines))
     return 0
 
 
@@ -41,12 +41,12 @@ def check_security_linter(directory: str, verbose: bool, config_file: str, linte
                           variables_passed: bool) -> int:
     if check_needed(linter, variables_passed):
         print_default(f'Security lint with bandit (only high-severity issues, see "{config_file}")')
-        lines = shell_run(f'bandit -r {directory} -lll')
+        lines = shell_run(f'bandit -r {directory} -lll')  # TODO проверить корректность -lll
         if 'No issues identified' in lines:
             print_ok(lines, verbose)
             return 0
         print_error(lines)
-        return 1
+        return lines.count('>> Issue:')
     return 0
 
 
@@ -91,7 +91,7 @@ def check_unit_tests(directory: str, verbose: bool, tests: bool, variables_passe
 
             if failures:
                 print_error(output)
-                return 1
+                return int(re.findall(r'failures=(\d+)', output)[0])
             print_ok('', verbose)
             return 0
     return 0
@@ -104,7 +104,7 @@ def check_garpix_page_tests(verbose: bool, garpix_page: bool, variables_passed: 
 
         if failures:
             print_error(output)
-            return 1
+            return int(re.findall(r'failures=(\d+)', output)[0])
         print_ok('', verbose)
     return 0
 
@@ -159,7 +159,7 @@ def check_lighthouse(verbose: bool, lighthouse: bool, clear_reports: bool, varia
 
 def check_sentry() -> int:
     print_default('Sentry SDK')
-    if find_spec('sentry_sdk_в') is not None:
+    if find_spec('sentry_sdk') is not None:
         print_ok()
         return 0
     if getattr(settings, 'SENTRY_CHECK_METHOD', 'error') == 'error':

@@ -115,7 +115,7 @@ def run_qa(
             'garpix_page_tests_count': garpix_page_tests_count,
             'lighthouse_count': lighthouse_count,
             'sentry_count': sentry_count,
-            'coverage_result': coverage_result, 
+            'coverage_result': coverage_result,
             'coverage_value': coverage_value,
             'start_at': start_at,
             'duration': duration
