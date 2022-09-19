@@ -75,12 +75,14 @@ def check_unit_tests(directory: str, verbose: bool, tests: bool, variables_passe
             passed_count: list = re.findall(r'(\d+) passed', lines)
             skipped_count: list = re.findall(r'(\d+) skipped', lines)
 
-            if int(tests_count[0]) == sum(list(map(int, skipped_count)) + list(map(int, passed_count))):
+            int_tests_count = int(tests_count[0])
+            int_passed = sum(list(map(int, skipped_count)) + list(map(int, passed_count)))
+            if int_tests_count == int_passed:
                 print_ok(lines, verbose)
                 return 0
 
             print_error(lines)
-            return 1
+            return int_tests_count - int_passed
         else:
             print_default('Django unit tests')
 
