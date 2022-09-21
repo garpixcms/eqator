@@ -21,6 +21,8 @@ from .constants import CONFIG_FILE_NAME_RADON, CONFIG_FILE_CONTENT_RADON
 from .constants import CONFIG_FILE_NAME_BANDIT, CONFIG_FILE_CONTENT_BANDIT
 from .constants import CONFIG_FILE_NAME_LIGHTHOUSE, CONFIG_FILE_CONTENT_LIGHTHOUSE
 
+from .services.send import send_service
+
 
 def create_config(directory, config_file_name, config_file_content):
     path = os.path.join(directory, config_file_name)
@@ -40,7 +42,7 @@ def create_configuration_files(directory):
 def run_qa(
         directory, verbose: bool = False, lighthouse: bool = False, clear_reports: bool = False,
         flake: bool = False, radon: bool = False, linter: bool = False, migrations: bool = False, tests: bool = False,
-        garpix_page: bool = False, test_coverage: bool = False
+        garpix_page: bool = False, test_coverage: bool = False, send: bool = False
 ):
     # Default run all check without lighthouse
     variables_passed = lighthouse or flake or radon or linter or migrations or tests or garpix_page or test_coverage
@@ -58,32 +60,40 @@ def run_qa(
     print_header('Checking')
 
     # flake8 for backend
-    error_count += check_flake(directory, verbose, CONFIG_FILE_NAME_FLAKE8, flake, variables_passed)
+    flake_count = check_flake(directory, verbose, CONFIG_FILE_NAME_FLAKE8, flake, variables_passed)
+    error_count += flake_count
 
     # Cyclomatic complexity
-    error_count += check_radon(directory, verbose, CONFIG_FILE_NAME_RADON, radon, variables_passed)
+    radon_count = check_radon(directory, verbose, CONFIG_FILE_NAME_RADON, radon, variables_passed)
+    error_count += radon_count
 
     # Security linter
-    error_count += check_security_linter(directory, verbose, CONFIG_FILE_NAME_BANDIT, linter, variables_passed)
+    security_linter_count = check_security_linter(directory, verbose, CONFIG_FILE_NAME_BANDIT, linter, variables_passed)
+    error_count += security_linter_count
 
     # Project migrations
-    error_count += check_migrations(directory, verbose, migrations, variables_passed)
+    migrations_count = check_migrations(directory, verbose, migrations, variables_passed)
+    error_count += migrations_count
 
     # Unit tests
-    error_count += check_unit_tests(directory, verbose, tests, variables_passed, test_coverage)
+    unit_tests_count = check_unit_tests(directory, verbose, tests, variables_passed, test_coverage)
+    error_count += unit_tests_count
 
     # Unit tests garpix_page
-    error_count += check_garpix_page_tests(verbose, garpix_page, variables_passed)
+    garpix_page_tests_count = check_garpix_page_tests(verbose, garpix_page, variables_passed)
+    error_count += garpix_page_tests_count
 
     # Test coverage
     coverage_result, coverage_value = check_test_coverage(verbose, test_coverage, variables_passed)
     error_count += coverage_result
 
     # Lighthouse
-    error_count += check_lighthouse(verbose, lighthouse, clear_reports, variables_passed)
+    lighthouse_count = check_lighthouse(verbose, lighthouse, clear_reports, variables_passed)
+    error_count += lighthouse_count
 
     # Sentry SDK
-    error_count += check_sentry()
+    sentry_count = check_sentry()
+    error_count += sentry_count
 
     # *** RESULT ***
     end_at = datetime.datetime.now()
@@ -93,6 +103,24 @@ def run_qa(
     print_default(f'Problems found: {error_count}\n')
     print_default(f'End at: {end_at}\n')
     print_default(f'Duration: {duration}\n')
+
+    if send:
+        send_service.report(**{
+            'error_count': error_count,
+            'flake_count': flake_count,
+            'radon_count': radon_count,
+            'security_linter_count': security_linter_count,
+            'migrations_count': migrations_count,
+            'unit_tests_count': unit_tests_count,
+            'garpix_page_tests_count': garpix_page_tests_count,
+            'lighthouse_count': lighthouse_count,
+            'sentry_count': sentry_count,
+            'coverage_result': coverage_result,
+            'coverage_value': coverage_value,
+            'start_at': start_at,
+            'duration': duration
+        })
+
     if coverage_value != -1:
         print_default(f'Test coverage: {coverage_value}%\n')
     print_empty()
