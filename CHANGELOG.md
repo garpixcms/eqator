@@ -1,3 +1,7 @@
+### 2.4.0 (21.09.2022)
+
+- Send statistics to your remote server.
+
 ### 2.3.0 (25.08.2022)
 
 - Sentry SDK installation check added
