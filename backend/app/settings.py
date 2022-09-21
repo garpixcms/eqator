@@ -145,4 +145,4 @@ TEST_COVERAGE_RATE = 8
 SENTRY_CHECK_METHOD = 'warning'
 LIGHTHOUSE_CHECK_METHOD = 'warning'
 
-EQATOR_SEND_HOST = 'http://localhost:8000/analytics/eqator/raros/'
+EQATOR_SEND_HOST = 'http://localhost:8000/analytics/eqator/eqator/'

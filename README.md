@@ -255,6 +255,25 @@ EQATOR_SEND_HOST = 'http://example.com/analytics/eqator/:project_name/'
 python manage.py qa --send
 ```
 
+Data format
+
+```json
+{
+  "duration": "0:00:01.557757",
+  "start_at": "2022-09-20 11:56:41.230550",
+  "error_count": 4,
+  "flake_count": 2,
+  "radon_count": 1,
+  "sentry_count": 0,
+  "coverage_value": 8,
+  "coverage_result": 0,
+  "lighthouse_count": 0,
+  "migrations_count": 1,
+  "unit_tests_count": 0,
+  "security_linter_count": 0,
+  "garpix_page_tests_count": 0
+}
+```
 
 # Changelog
 
