@@ -1,3 +1,7 @@
+### 2.4.1 (22.09.2022)
+
+- Unit tests error count fixed.
+
 ### 2.4.0 (21.09.2022)
 
 - Send statistics to your remote server.
