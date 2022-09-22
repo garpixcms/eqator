@@ -67,7 +67,7 @@ def check_unit_tests(directory: str, verbose: bool, tests: bool, variables_passe
     if check_needed(tests, variables_passed):
         command_pref = 'coverage run ' if check_needed(test_coverage, variables_passed) else ''
 
-        if find_spec('pytest_e') is not None:
+        if find_spec('pytest') is not None:
             print_default('Django pytest')
             cmd = 'coverage run -m pytest' if check_needed(test_coverage, variables_passed) else 'pytest'
             lines = shell_run(cmd)
