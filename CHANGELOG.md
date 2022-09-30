@@ -1,3 +1,7 @@
+### 2.5.0 (30.09.2022)
+
+- Add `test_coverage_report` run option (prints test coverage report even if this check result is success)
+
 ### 2.4.1 (22.09.2022)
 
 - Unit tests error count fixed.

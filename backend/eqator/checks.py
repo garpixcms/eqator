@@ -111,7 +111,7 @@ def check_garpix_page_tests(verbose: bool, garpix_page: bool, variables_passed: 
     return 0
 
 
-def check_test_coverage(verbose: bool, coverage: bool, variables_passed: bool) -> (int, int):
+def check_test_coverage(verbose: bool, coverage: bool, variables_passed: bool, test_coverage_report: bool) -> (int, int):
     coverage_result = -1
 
     if check_needed(coverage, variables_passed):
@@ -129,6 +129,8 @@ def check_test_coverage(verbose: bool, coverage: bool, variables_passed: bool) -
             print_error(lines)
             return 1, coverage_result
         print_ok('', verbose)
+        if test_coverage_report:
+            print_default(lines)
 
     return 0, coverage_result
 

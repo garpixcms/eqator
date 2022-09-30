@@ -42,7 +42,7 @@ def create_configuration_files(directory):
 def run_qa(
         directory, verbose: bool = False, lighthouse: bool = False, clear_reports: bool = False,
         flake: bool = False, radon: bool = False, linter: bool = False, migrations: bool = False, tests: bool = False,
-        garpix_page: bool = False, test_coverage: bool = False, send: bool = False
+        garpix_page: bool = False, test_coverage: bool = False, send: bool = False, test_coverage_report: bool = False
 ):
     # Default run all check without lighthouse
     variables_passed = lighthouse or flake or radon or linter or migrations or tests or garpix_page or test_coverage
@@ -84,7 +84,7 @@ def run_qa(
     error_count += garpix_page_tests_count
 
     # Test coverage
-    coverage_result, coverage_value = check_test_coverage(verbose, test_coverage, variables_passed)
+    coverage_result, coverage_value = check_test_coverage(verbose, test_coverage, variables_passed, test_coverage_report)
     error_count += coverage_result
 
     # Lighthouse
