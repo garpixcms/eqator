@@ -70,6 +70,12 @@ class Command(BaseCommand):
         )
 
         parser.add_argument(
+            '--test_coverage_report', '-cr',
+            action='store_true',
+            help='Print coverage report even if this check result is success'
+        )
+
+        parser.add_argument(
             '--send', '-s',
             action='store_true',
             help='Submit audit information'
@@ -87,6 +93,7 @@ class Command(BaseCommand):
         tests = options['tests']
         garpix_page = options['garpix_page']
         test_coverage = options['test_coverage']
+        test_coverage_report = options['test_coverage_report']
         send = options['send']
         run_qa(directory, verbose, lighthouse, clear_reports, flake, radon, linter, migrations, tests, garpix_page,
-               test_coverage, send)
+               test_coverage, send, test_coverage_report)
