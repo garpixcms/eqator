@@ -10,6 +10,7 @@ per-file-ignores = __init__.py: F401, F403
 # radon
 CONFIG_FILE_NAME_RADON = 'radon.cfg'
 CONFIG_FILE_CONTENT_RADON = '''[radon]
+exclude = */venv/*
 cc_min = C
 '''
 

@@ -89,7 +89,9 @@ def check_unit_tests(directory: str, verbose: bool, tests: bool, variables_passe
             if check_needed(test_coverage, variables_passed):
                 shell_run(f'{command_pref}{directory}/manage.py test')
 
-            failures, output = run_unit_tests(())
+            print(getattr(settings, 'EQATOR_TEST_MODULES', ()))
+
+            failures, output = run_unit_tests(getattr(settings, 'EQATOR_TEST_MODULES', ()))
 
             if failures:
                 print_error(output)
@@ -122,6 +124,10 @@ def check_test_coverage(verbose: bool, coverage: bool, variables_passed: bool, t
         lines = shell_run(cmd)
 
         result_line: list = re.findall(r'TOTAL[ \d]+ (\d+)%', lines)
+
+        if len(result_line) == 0:
+            print_error(lines)
+            return 1, coverage_result
 
         coverage_result = int(result_line[0])
 
