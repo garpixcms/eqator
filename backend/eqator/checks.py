@@ -89,8 +89,6 @@ def check_unit_tests(directory: str, verbose: bool, tests: bool, variables_passe
             if check_needed(test_coverage, variables_passed):
                 shell_run(f'{command_pref}{directory}/manage.py test')
 
-            print(getattr(settings, 'EQATOR_TEST_MODULES', ()))
-
             failures, output = run_unit_tests(getattr(settings, 'EQATOR_TEST_MODULES', ()))
 
             if failures:
