@@ -63,10 +63,9 @@ def run_unit_tests(config_file: str, apps: tuple) -> (int, str):
     new_stdout = io.StringIO()
     sys.stdout, sys.stderr = new_stdout, new_stdout
     try:
-        if not apps:
-            with open(config_file) as f:
-                test_options = json.loads(f.read())
-                apps = tuple(test_options.get('apps', []))
+        with open(config_file) as f:
+            test_options = json.loads(f.read())
+            apps = apps or tuple(test_options.get('apps', []))
         test_runner = DiscoverRunner(**test_options)
         failures = test_runner.run_tests(apps)
         output = new_stdout.getvalue()
