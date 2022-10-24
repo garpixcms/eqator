@@ -66,9 +66,9 @@ def run_unit_tests(config_file: str, apps: tuple) -> (int, str):
         with open(config_file) as f:
             test_options = json.loads(f.read())
             apps = apps or tuple(test_options.get('apps', []))
-        test_runner = DiscoverRunner(**test_options)
-        failures = test_runner.run_tests(apps)
-        output = new_stdout.getvalue()
+            test_runner = DiscoverRunner(**test_options)
+            failures = test_runner.run_tests(apps)
+            output = new_stdout.getvalue()
         sys.stderr, sys.stdout = old_stderr, old_stdout
     except Exception as e:
         sys.stderr, sys.stdout = old_stderr, old_stdout
