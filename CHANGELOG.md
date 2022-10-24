@@ -1,6 +1,6 @@
-### 2.5.0 (30.09.2022)
+### 2.6.0 (24.10.2022)
 
-- Add `EQATOR_TEST_MODULES` setting (specify the apps to run unit tests)
+- Add `testcaserc.json` - config file for `TestCase` unit tests (examples in `Readme.md`)
 
 ### 2.5.0 (30.09.2022)
 

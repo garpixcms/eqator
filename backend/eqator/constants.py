@@ -19,6 +19,15 @@ CONFIG_FILE_NAME_BANDIT = '.bandit'
 CONFIG_FILE_CONTENT_BANDIT = '''[bandit]
 '''
 
+# unit tests
+CONFIG_FILE_NAME_TESTCASE = 'testcaserc.json'
+CONFIG_FILE_CONTENT_TESTCASE = '''
+{
+    "apps": [],
+    "keepdb": true
+}
+'''
+
 # test coverage
 CONFIG_FILE_NAME_COVERAGE = '.coveragerc'
 CONFIG_FILE_CONTENT_COVERAGE = '''
