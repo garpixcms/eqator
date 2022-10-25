@@ -4,18 +4,28 @@ CONFIG_FILE_CONTENT_FLAKE8 = '''[flake8]
 ignore = E501
 exclude = .git,__pycache__,old,build,dist,venv,*/migrations/*,*/settings/*
 max-complexity = 10
-per-file-ignores = __init__.py: F401, F403
+per-file-ignores = __init__.py: F401, F403, F405
 '''
 
 # radon
 CONFIG_FILE_NAME_RADON = 'radon.cfg'
 CONFIG_FILE_CONTENT_RADON = '''[radon]
+exclude = */venv/*
 cc_min = C
 '''
 
 # bandit
 CONFIG_FILE_NAME_BANDIT = '.bandit'
 CONFIG_FILE_CONTENT_BANDIT = '''[bandit]
+'''
+
+# unit tests
+CONFIG_FILE_NAME_TESTCASE = 'testcaserc.json'
+CONFIG_FILE_CONTENT_TESTCASE = '''
+{
+    "apps": [],
+    "keepdb": true
+}
 '''
 
 # test coverage

@@ -242,6 +242,66 @@ Edit `lighthouserc.json` to set URL and configure assertions.
 
 Reference: https://github.com/GoogleChrome/lighthouse-ci/blob/main/docs/configuration.md
 
+## Configure TestCase unit tests
+Edit `testcaserc.json` to add configure options.
+
+All available configurations:
+
+- `apps` - list of apps must be tested;
+- `keepdb` - preserves the test DB between runs;
+- `top_level` - top level of project for unittest discovery;
+- `pattern` - the test matching pattern. Defaults to test*.py;
+- `reverse` - reverses test cases order;
+- `debug_sql` - sets settings.DEBUG to True;
+- `parallel` - run tests using up to N parallel processes;
+- `tags` - run only tests with the specified tag;
+- `exclude_tags` - do not run tests with the specified tag;
+- `pdb` - runs a debugger (pdb, or ipdb if installed) on error or failure;
+- `buffer` - discard output from passing tests;
+- `test_name_patterns` - Only run test methods and classes that match the pattern or substring
+
+Example:
+
+```json
+{
+    "apps": ["app"],
+}
+```
+
+## Send report
+
+To send statistics you need to add `EQATOR_SEND_HOST`:
+```python
+# settings.py
+
+EQATOR_SEND_HOST = 'http://example.com/analytics/eqator/:project_name/'
+```
+
+```bash
+python manage.py qa --send
+```
+
+Data format
+
+```json
+{
+  "duration": "0:00:01.557757",
+  "start_at": "2022-09-20 11:56:41.230550",
+  "error_count": 4,
+  "flake_count": 2,
+  "radon_count": 1,
+  "sentry_count": 0,
+  "coverage_value": 8,
+  "coverage_result": 0,
+  "lighthouse_count": 0,
+  "migrations_count": 1,
+  "unit_tests_count": 0,
+  "security_linter_count": 0,
+  "garpix_page_tests_count": 0
+}
+```
+
+
 # Changelog
 
 See [CHANGELOG.md](CHANGELOG.md).

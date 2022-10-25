@@ -19,6 +19,7 @@ from .constants import CONFIG_FILE_NAME_FLAKE8, CONFIG_FILE_CONTENT_FLAKE8
 from .constants import CONFIG_FILE_NAME_COVERAGE, CONFIG_FILE_CONTENT_COVERAGE
 from .constants import CONFIG_FILE_NAME_RADON, CONFIG_FILE_CONTENT_RADON
 from .constants import CONFIG_FILE_NAME_BANDIT, CONFIG_FILE_CONTENT_BANDIT
+from .constants import CONFIG_FILE_NAME_TESTCASE, CONFIG_FILE_CONTENT_TESTCASE
 from .constants import CONFIG_FILE_NAME_LIGHTHOUSE, CONFIG_FILE_CONTENT_LIGHTHOUSE
 
 from .services.send import send_service
@@ -36,6 +37,7 @@ def create_configuration_files(directory):
     create_config(directory, CONFIG_FILE_NAME_RADON, CONFIG_FILE_CONTENT_RADON)
     create_config(directory, CONFIG_FILE_NAME_BANDIT, CONFIG_FILE_CONTENT_BANDIT)
     create_config(directory, CONFIG_FILE_NAME_COVERAGE, CONFIG_FILE_CONTENT_COVERAGE)
+    create_config(directory, CONFIG_FILE_NAME_TESTCASE, CONFIG_FILE_CONTENT_TESTCASE)
     create_config(directory, CONFIG_FILE_NAME_LIGHTHOUSE, CONFIG_FILE_CONTENT_LIGHTHOUSE)
 
 
@@ -76,11 +78,11 @@ def run_qa(
     error_count += migrations_count
 
     # Unit tests
-    unit_tests_count = check_unit_tests(directory, verbose, tests, variables_passed, test_coverage)
+    unit_tests_count = check_unit_tests(directory, verbose, CONFIG_FILE_NAME_TESTCASE, tests, variables_passed, test_coverage)
     error_count += unit_tests_count
 
     # Unit tests garpix_page
-    garpix_page_tests_count = check_garpix_page_tests(verbose, garpix_page, variables_passed)
+    garpix_page_tests_count = check_garpix_page_tests(verbose, CONFIG_FILE_NAME_TESTCASE, garpix_page, variables_passed)
     error_count += garpix_page_tests_count
 
     # Test coverage

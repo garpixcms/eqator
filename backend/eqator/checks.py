@@ -63,7 +63,7 @@ def check_migrations(directory: str, verbose: bool, migrations: bool, variables_
     return 0
 
 
-def check_unit_tests(directory: str, verbose: bool, tests: bool, variables_passed: bool, test_coverage: bool) -> int:
+def check_unit_tests(directory: str, verbose: bool, config_file: str, tests: bool, variables_passed: bool, test_coverage: bool) -> int:
     if check_needed(tests, variables_passed):
         command_pref = 'coverage run ' if check_needed(test_coverage, variables_passed) else ''
 
@@ -89,7 +89,7 @@ def check_unit_tests(directory: str, verbose: bool, tests: bool, variables_passe
             if check_needed(test_coverage, variables_passed):
                 shell_run(f'{command_pref}{directory}/manage.py test')
 
-            failures, output = run_unit_tests(())
+            failures, output = run_unit_tests(config_file, ())
 
             if failures:
                 print_error(output)
@@ -99,10 +99,10 @@ def check_unit_tests(directory: str, verbose: bool, tests: bool, variables_passe
     return 0
 
 
-def check_garpix_page_tests(verbose: bool, garpix_page: bool, variables_passed: bool) -> int:
+def check_garpix_page_tests(verbose: bool, config_file: str, garpix_page: bool, variables_passed: bool) -> int:
     if 'garpix_page' in settings.INSTALLED_APPS and check_needed(garpix_page, variables_passed):
         print_default('Django unit tests garpix_page')
-        failures, output = run_unit_tests(('garpix_page',))
+        failures, output = run_unit_tests(config_file, ('garpix_page',))
 
         if failures:
             print_error(output)
@@ -122,6 +122,10 @@ def check_test_coverage(verbose: bool, coverage: bool, variables_passed: bool, t
         lines = shell_run(cmd)
 
         result_line: list = re.findall(r'TOTAL[ \d]+ (\d+)%', lines)
+
+        if len(result_line) == 0:
+            print_error(lines)
+            return 1, coverage_result
 
         coverage_result = int(result_line[0])
 

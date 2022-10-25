@@ -1,3 +1,7 @@
+### 2.6.0 (24.10.2022)
+
+- Add `testcaserc.json` - config file for `TestCase` unit tests (examples in `Readme.md`)
+
 ### 2.5.0 (30.09.2022)
 
 - Add `test_coverage_report` run option (prints test coverage report even if this check result is success)
