@@ -14,7 +14,8 @@ class SendService:
         json_data = json.dumps({
             'data': kwargs
         }, indent=4, sort_keys=True, default=str)
-        r = requests.post(url_base, data=json_data)
+        headers = {'Content-type': 'application/json'}
+        r = requests.post(url_base, data=json_data, headers=headers)
         print_default(f'Send status - {r.status_code}\n')
 
 

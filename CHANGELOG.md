@@ -1,3 +1,7 @@
+### 2.7.0 (06.04.2023)
+
+- Send statistics functionality updated
+
 ### 2.6.0 (24.10.2022)
 
 - Add `testcaserc.json` - config file for `TestCase` unit tests (examples in `Readme.md`)
