@@ -8,7 +8,8 @@ from django.conf import settings
 from .helpers import print_default
 from .helpers import check_needed
 import re
-
+import sys
+import subprocess
 
 def check_flake(directory: str, verbose: bool, config_file: str, flake: bool, variables_passed: bool) -> int:
     if check_needed(flake, variables_passed):
