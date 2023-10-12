@@ -8,7 +8,8 @@ from django.conf import settings
 from .helpers import print_default
 from .helpers import check_needed
 import re
-
+import sys
+import subprocess
 
 def check_flake(directory: str, verbose: bool, config_file: str, flake: bool, variables_passed: bool) -> int:
     if check_needed(flake, variables_passed):
@@ -84,11 +85,11 @@ def check_unit_tests(directory: str, verbose: bool, config_file: str, tests: boo
             print_error(lines)
             return int_tests_count - int_passed
         else:
-            print_default('Django unit tests')
-
+            print_default('Django unit tests ')
             if check_needed(test_coverage, variables_passed):
-                shell_run(f'{command_pref}{directory}/manage.py test')
-
+                sys.stdout.flush()
+                cmd = f'{command_pref}{directory}/manage.py test {directory} --noinput'
+                subprocess.Popen(cmd, shell=True, stderr=subprocess.STDOUT)
             failures, output = run_unit_tests(config_file, ())
 
             if failures:
