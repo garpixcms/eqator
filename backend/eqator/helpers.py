@@ -13,6 +13,7 @@ from .colors import BOLD
 def print_default(text=''):
     sys.stdout.write(RESET)
     sys.stdout.write(f'  {text}')
+    sys.stdout.flush()
 
 
 def print_ok(lines='', verbose=False):
